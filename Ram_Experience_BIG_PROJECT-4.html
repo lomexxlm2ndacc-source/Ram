@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>❤️ The Ram Experience</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,Arial;color:#fff;background:#160c2b;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;background:linear-gradient(180deg,rgba(20,8,45,.15),rgba(10,4,25,.75)),url("https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=2200&q=90") center/cover;z-index:-3}
+body:after{content:"";position:fixed;inset:0;background:radial-gradient(circle at 50% 20%,transparent,rgba(0,0,0,.45));z-index:-2}
+.wrap{width:min(960px,92%);margin:0 auto;padding:35px 0 60px}.glass{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(18px);border-radius:32px;box-shadow:0 25px 70px #0007;padding:34px;text-align:center}
+h1{font-size:clamp(44px,9vw,88px);margin:0;text-shadow:0 8px 35px #0008}h2{font-size:clamp(28px,5vw,48px)}p{font-size:19px;line-height:1.5}.tag{letter-spacing:5px;text-transform:uppercase;opacity:.75;font-size:13px}
+button{border:0;border-radius:999px;padding:15px 28px;margin:8px;font-size:19px;font-weight:800;color:#fff;background:linear-gradient(135deg,#ff4d91,#ff1744);cursor:pointer;box-shadow:0 10px 25px #0005;transition:.2s}button:hover{transform:translateY(-3px) scale(1.03)}button.secondary{background:#ffffff1c;border:1px solid #fff5}
+.hidden{display:none!important}.bar{height:8px;background:#ffffff25;border-radius:20px;margin:25px 0;overflow:hidden}.bar>i{display:block;height:100%;width:0;background:#fff;transition:.4s}
+.options{display:flex;flex-wrap:wrap;justify-content:center}.option{min-width:190px}
+.heart{position:fixed;bottom:-50px;z-index:-1;animation:up 9s linear infinite;opacity:.65}.h1{left:8%;animation-delay:1s}.h2{left:28%;animation-delay:4s}.h3{left:55%;animation-delay:2s}.h4{left:80%;animation-delay:6s}
+@keyframes up{to{transform:translateY(-115vh) rotate(360deg);opacity:0}}
+#gameArea{min-height:210px;display:flex;flex-direction:column;justify-content:center;align-items:center}.catch{font-size:52px!important;padding:10px 24px}.memoryGrid{display:grid;grid-template-columns:repeat(2,100px);gap:12px;justify-content:center}.tile{width:100px;height:100px;font-size:38px;background:#ffffff1a}.tile.done{background:#ff4d9144}
+#quizScore{font-weight:800}.final{font-size:30px}
+.confetti{position:fixed;top:-20px;font-size:24px;animation:fall 3s linear forwards;z-index:10}@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+input{padding:15px;border-radius:15px;border:1px solid #fff5;background:#ffffff18;color:white;font-size:18px;text-align:center;outline:0}
+.small{opacity:.75;font-size:14px}
+</style>
+</head>
+<body>
+<div class="heart h1">❤️</div><div class="heart h2">💗</div><div class="heart h3">💕</div><div class="heart h4">💖</div>
+<div class="wrap">
+
+<section class="glass" id="home">
+<div class="tag">A tiny adventure made for you</div>
+<h1>RAM ❤️</h1>
+<p>Welcome to the <b>Ultimate Ram Experience</b>.<br>There are questions, games, surprises… and absolutely no cheating. 👀</p>
+<button onclick="start()">START THE ADVENTURE ✨</button>
+</section>
+
+<section class="glass hidden" id="questions">
+<div class="tag" id="qnum">Question 1</div>
+<h2 id="question"></h2>
+<div class="options" id="options"></div>
+<div id="qresult" style="min-height:35px"></div>
+<div class="bar"><i id="qbar"></i></div>
+</section>
+
+<section class="glass hidden" id="game1">
+<div class="tag">Mini Game 1</div><h2>🎯 Catch The Hearts</h2>
+<p>Catch as many ❤️ as possible before the timer ends!</p>
+<div id="gameArea"><button class="catch" id="catch" onclick="catchHeart()">❤️</button><div id="catchInfo">10 seconds • Score: 0</div></div>
+</section>
+
+<section class="glass hidden" id="game2">
+<div class="tag">Mini Game 2</div><h2>🧠 How Well Do You Know Ram?</h2>
+<p id="quizQ"></p><div id="quizOpts" class="options"></div><div id="quizScore"></div>
+</section>
+
+<section class="glass hidden" id="game3">
+<div class="tag">Mini Game 3</div><h2>💝 Memory Match</h2>
+<p>Find the two matching hearts!</p>
+<div class="memoryGrid" id="memory"></div><p id="memoryMsg"></p>
+</section>
+
+<section class="glass hidden" id="final">
+<div class="tag">You made it</div>
+<h1>💖</h1>
+<h2 class="final">THE RAM EXPERIENCE IS COMPLETE!</h2>
+<p id="finalText"></p>
+<button onclick="confetti()">CELEBRATE 🎉</button>
+<button class="secondary" onclick="location.reload()">PLAY AGAIN 🔄</button>
+</section>
+
+</div>
+
+<script>
+const qs=[
+["Do you love Ram? ❤️",["YES ❤️","Obviously 😌","Maybe 👀"]],
+["Does Ram make you smile? 🥹",["YES 💗","All the time","Definitely"]],
+["Would you choose Ram for another adventure? 🌅",["YES ✨","Of course","Absolutely"]],
+["Do you smile when you see a message from Ram? 📱💕",["YES 😭","Maybe a little","Definitely"]],
+["Would you save Ram a special place in your heart? ❤️",["YES 💖","Always","Of course"]],
+["Does Ram make ordinary days more fun? 🌸",["YES 😌","Definitely","Absolutely"]],
+["FINAL QUESTION: Will you keep choosing Ram? 💕",["YES ❤️","ALWAYS 🥹","100%"]]
+];
+let qi=0;
+function show(id){document.querySelectorAll(".glass").forEach(x=>x.classList.add("hidden"));document.getElementById(id).classList.remove("hidden")}
+function start(){show("questions");renderQ()}
+function renderQ(){
+ document.getElementById("qnum").textContent=`Question ${qi+1} of ${qs.length}`;
+ document.getElementById("question").textContent=qs[qi][0];
+ document.getElementById("options").innerHTML=qs[qi][1].map(x=>`<button class="option" onclick="answer()">${x}</button>`).join("");
+ document.getElementById("qresult").textContent="";
+ document.getElementById("qbar").style.width=((qi+1)/qs.length*100)+"%";
+}
+function answer(){
+ document.getElementById("qresult").textContent="Correct answer 😌❤️";
+ qi++;
+ setTimeout(()=>{if(qi<qs.length)renderQ();else startGame1()},500)
+}
+function startGame1(){show("game1");let s=0,t=10;const b=document.getElementById("catch"),info=document.getElementById("catchInfo");b.disabled=false;b.onclick=()=>{s++;info.textContent=`${t} seconds • Score: ${s}`;b.style.transform=`translate(${Math.random()*120-60}px,${Math.random()*50-25}px)`};let timer=setInterval(()=>{t--;info.textContent=`${t} seconds • Score: ${s}`;if(t<=0){clearInterval(timer);show("game2");startQuiz()}},1000)}
+const quiz=[
+["Which one sounds most like a Ram adventure? 🌅",["Sunset + music","Doing homework","Watching paint dry"],0],
+["What makes a great memory? 💕",["Laughing together","Being bored","Nothing"],0],
+["Final choice? 👀",["Ram ❤️","RAM ❤️","Both are correct 😭❤️"],2]
+];let qz=0,score=0;
+function startQuiz(){renderQuiz()}
+function renderQuiz(){let x=quiz[qz];document.getElementById("quizQ").textContent=x[0];document.getElementById("quizOpts").innerHTML=x[1].map((o,i)=>`<button onclick="quizAns(${i})">${o}</button>`).join("");document.getElementById("quizScore").textContent=`Score: ${score}/${qz}`}
+function quizAns(i){if(i===quiz[qz][2])score++;qz++;if(qz<quiz.length)renderQuiz();else startMemory()}
+function startMemory(){show("game3");let arr=["❤️","💗","💕","💖","❤️","💗","💕","💖"];arr.sort(()=>Math.random()-.5);let first=null,lock=false,matches=0;document.getElementById("memory").innerHTML=arr.map((x,i)=>`<button class="tile" data-v="${x}" onclick="flip(this)"></button>`).join("");window.mem={first,lock,matches}}
+function flip(el){if(window.mem.lock||el.classList.contains("done")||el.textContent)return;el.textContent=el.dataset.v;if(!window.mem.first){window.mem.first=el;return}if(window.mem.first.dataset.v===el.dataset.v){el.classList.add("done");window.mem.first.classList.add("done");window.mem.first=null;window.mem.matches++;if(window.mem.matches===4){document.getElementById("memoryMsg").textContent="Perfect match! 💖";setTimeout(finish,600)}}else{window.mem.lock=true;let a=window.mem.first;setTimeout(()=>{a.textContent="";el.textContent="";window.mem.first=null;window.mem.lock=false},650)}}
+function finish(){show("final");document.getElementById("finalText").innerHTML="You completed every question and every mini-game.<br><br><b>Official result:</b> Ram is extremely lucky. ❤️🥹";confetti()}
+function confetti(){for(let i=0;i<70;i++){let s=document.createElement("span");s.className="confetti";s.textContent=["❤️","💖","💕","✨","🎉"][Math.floor(Math.random()*5)];s.style.left=Math.random()*100+"vw";s.style.animationDelay=Math.random()*1.5+"s";document.body.appendChild(s);setTimeout(()=>s.remove(),4000)}}
+</script>
+</body>
+</html>
